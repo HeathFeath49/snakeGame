@@ -11,6 +11,9 @@ $('document').ready(function(){
 	var cellSize = 20;
 	var snakeArr = [];
 	var direction = "right";
+	var foodExists = false;
+	var fX; //holds x value of food
+	var fY; //holds y value of food
 
 	function initiateGame(){
 		createSnake();
@@ -18,7 +21,7 @@ $('document').ready(function(){
 		if(typeof game_loop != "undefined"){
 			clearInterval(game_loop);
 		}
-		game_loop = setInterval(draw, 150);
+		game_loop = setInterval(draw, 1200);
 
 	}
 
@@ -49,7 +52,7 @@ $('document').ready(function(){
 		}
 		checkInput();
 		moveSnake();
-
+		createFood();
 	}
 	//function to draw individual cells
 	function drawCell(x,y){
@@ -103,6 +106,19 @@ $('document').ready(function(){
 		tail = snakeArr.pop();
 		tail.xVal = sTx; tail.yVal = sTy;
 		snakeArr.unshift(tail);
+	}
+
+	//function that calls the paintcell function on random x and y value
+	function createFood(){
+		if(!(foodExists)){
+			fX = Math.floor(Math.random()*(canWidth/cellSize));
+			fY = Math.floor(Math.random()*(canHeight/cellSize));
+		
+			foodExists = true;	
+		}	
+		drawCell(fX,fY);
+		console.log(fX);
+		console.log(fY);
 	}
 
 });
