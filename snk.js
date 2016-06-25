@@ -21,7 +21,7 @@ $('document').ready(function(){
 		if(typeof game_loop != "undefined"){
 			clearInterval(game_loop);
 		}
-		game_loop = setInterval(draw, 1200);
+		game_loop = setInterval(draw, 400);
 
 	}
 
@@ -51,6 +51,7 @@ $('document').ready(function(){
 			drawCell(currentCell.xVal,currentCell.yVal); 
 		}
 		checkInput();
+		checkCollision();
 		moveSnake();
 		createFood();
 	}
@@ -81,6 +82,15 @@ $('document').ready(function(){
 
 			}
 		})
+	}
+
+	function checkCollision(){
+		//check for collision between snake and right wall
+		var sH = snakeArr[0];
+		if(sH.xVal > (canWidth/cellSize)-1.5){
+			/*alert('collision');*/
+			clearInterval(game_loop);
+		}
 	}
 
 	//function to move snake
@@ -117,8 +127,8 @@ $('document').ready(function(){
 			foodExists = true;	
 		}	
 		drawCell(fX,fY);
-		console.log(fX);
-		console.log(fY);
+		/*console.log(fX);
+		console.log(fY);*/
 	}
 
 });
