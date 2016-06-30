@@ -10,6 +10,10 @@ $('document').ready(function(){
 	//game variables
 	var cellSize = 20;
 	var snakeArr = [];
+	var snakeLength = 5;
+	var sTx;
+	var sTy;
+	var tail;
 	var direction = "right";
 	var foodExists = false;
 	var fX; //holds x value of food
@@ -21,7 +25,7 @@ $('document').ready(function(){
 		if(typeof game_loop != "undefined"){
 			clearInterval(game_loop);
 		}
-		game_loop = setInterval(draw, 400);
+		game_loop = setInterval(draw, 100);
 
 	}
 
@@ -30,7 +34,7 @@ $('document').ready(function(){
 
 	//create snake using array
 	function createSnake(){
-		var snakeLength = 5;
+		
 		for(var p=snakeLength-1;p>=0;p--){
 			snakeArr.push({xVal:p,yVal:0});
 		}
@@ -85,20 +89,38 @@ $('document').ready(function(){
 	}
 
 	function checkCollision(){
-		//check for collision between snake and right wall
+		//right wall collision detection
 		var sH = snakeArr[0];
-		if(sH.xVal > (canWidth/cellSize)-1.5){
-			/*alert('collision');*/
+		if(sH.xVal > (canWidth/cellSize)-1){
 			clearInterval(game_loop);
 		}
+		//left wall collision detection
+		if(sH.xVal < 0){
+			clearInterval(game_loop);
+		}
+		//top collision detection
+		if(sH.yVal < 0){	
+			clearInterval(game_loop);
+		}
+		//bottom collision detection
+		if(sH.yVal > (canHeight/cellSize)-1){
+			clearInterval(game_loop);
+		}
+
+		//food collision detection
+		if(sH.xVal == fX && sH.yVal == fY){
+			//tail = snakeArr[length-1];
+			//snakeArr.push({xVal:tail.xVal,yVal:tail.yVal})
+			snakeArr.push({xVal:0,yVal:0});
+			foodExists = false;
+		}
+
 	}
 
 	//function to move snake
 	function moveSnake(){
-		var sTx = snakeArr[0].xVal;
-		var sTy = snakeArr[0].yVal;
-		var tail;
-
+		sTx = snakeArr[0].xVal;
+		sTy = snakeArr[0].yVal;
 		//check user input
 		if(direction == "right"){
 			sTx++;
@@ -127,8 +149,6 @@ $('document').ready(function(){
 			foodExists = true;	
 		}	
 		drawCell(fX,fY);
-		/*console.log(fX);
-		console.log(fY);*/
 	}
 
 });
