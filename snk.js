@@ -72,16 +72,24 @@ $('document').ready(function(){
 		$(document).on('keypress',function(keyNum){
 			switch(keyNum.which){
 				case 119:
-					direction = 'up';
+					if(!(direction == 'down')){
+						direction = 'up';
+					}
 					break;
 				case 97:
-					direction = 'left';
+					if(!(direction == 'right')){
+						direction = 'left';
+					}
 					break;
 				case 115:
-					direction = 'down';
+					if(!(direction == 'up')){
+						direction = 'down';
+					}
 					break;
 				case 100:
-					direction = 'right';
+					if(!(direction == 'left')){
+						direction = 'right';
+					}
 					break;
 
 			}
@@ -89,31 +97,42 @@ $('document').ready(function(){
 	}
 
 	function checkCollision(){
-		//right wall collision detection
+
+		/*BOUNDARIES COLLISION DETECTION*/
+
 		var sH = snakeArr[0];
-		if(sH.xVal > (canWidth/cellSize)-1){
+		if(sH.xVal > (canWidth/cellSize)-1){//right wall collision detection
 			clearInterval(game_loop);
 		}
-		//left wall collision detection
-		if(sH.xVal < 0){
+		if(sH.xVal < 0){//left wall collision detection
 			clearInterval(game_loop);
 		}
-		//top collision detection
-		if(sH.yVal < 0){	
+		if(sH.yVal < 0){//top collision detection	
 			clearInterval(game_loop);
 		}
-		//bottom collision detection
-		if(sH.yVal > (canHeight/cellSize)-1){
+		if(sH.yVal > (canHeight/cellSize)-1){//bottom collision detection
 			clearInterval(game_loop);
 		}
 
-		//food collision detection
+		/*COLLECTABLES COLLISION DETECTION*/
+
 		if(sH.xVal == fX && sH.yVal == fY){
-			//tail = snakeArr[length-1];
-			//snakeArr.push({xVal:tail.xVal,yVal:tail.yVal})
 			snakeArr.push({xVal:0,yVal:0});
 			foodExists = false;
 		}
+
+		/*SNAKE BODY COLLISION DETECTION*/
+		for(i in snakeArr){
+			if(!(i == 0)){
+				sTx = snakeArr[0].xVal;
+				sTy = snakeArr[0].yVal;
+
+				if(snakeArr[i].xVal == sTx && snakeArr[i].yVal == sTy){
+					clearInterval(game_loop);
+				}		
+			}
+		}
+
 
 	}
 
